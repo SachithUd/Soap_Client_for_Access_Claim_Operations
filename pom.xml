@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.wso2.is</groupId>
-        <artifactId>wso2is-identity-samples-usermgt</artifactId>
-        <version>5.4.0-update7-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-
+    <groupId>org.wso2.is</groupId>
+    <version>5.4.0-update7-SNAPSHOT</version>
     <artifactId>identity-samples-remote-user-mgt</artifactId>
     <packaging>jar</packaging>
     <name>Samples/Remote User Management</name>
@@ -22,10 +16,12 @@
         <dependency>
             <groupId>org.wso2.carbon.identity.user.ws</groupId>
             <artifactId>org.wso2.carbon.um.ws.api.stub</artifactId>
+            <version>5.1.8</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.user.ws</groupId>
             <artifactId>org.wso2.carbon.um.ws.api</artifactId>
+            <version>5.1.8</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -36,22 +32,27 @@
         <dependency>
             <groupId>org.apache.axis2.wso2</groupId>
             <artifactId>axis2</artifactId>
+            <version>1.6.1.wso2v12</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.authenticator.stub</artifactId>
+            <version>4.4.21</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.user.core</artifactId>
-          </dependency>
+            <version>4.4.21</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.8</version>
         </dependency>
         <dependency>
             <groupId>org.apache.rampart.wso2</groupId>
             <artifactId>rampart-core</artifactId>
+            <version>1.6.1.wso2v25</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -62,6 +63,7 @@
         <dependency>
             <groupId>org.apache.rampart.wso2</groupId>
             <artifactId>rampart-policy</artifactId>
+            <version>1.6.1.wso2v25</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -122,4 +124,46 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <!-- Before adding ANYTHING in here, please start a discussion on the dev list.
+	Ideally the Axis2 build should only use Maven central (which is available
+	by default) and nothing else. We had troubles with other repositories in
+	the past. Therefore configuring additional repositories here should be
+	considered very carefully. -->
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>WSO2 Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+
+    </repositories>
 </project>

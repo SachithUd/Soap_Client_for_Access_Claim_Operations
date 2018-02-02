@@ -28,14 +28,13 @@ import org.wso2.carbon.identity.claim.metadata.mgt.stub.dto.AttributeMappingDTO;
 import org.wso2.carbon.identity.claim.metadata.mgt.stub.dto.ClaimDialectDTO;
 import org.wso2.carbon.identity.claim.metadata.mgt.stub.dto.ClaimPropertyDTO;
 import org.wso2.carbon.identity.claim.metadata.mgt.stub.dto.LocalClaimDTO;
-import org.wso2.carbon.um.ws.api.WSAuthorizationManager;
-import org.wso2.carbon.um.ws.api.WSUserStoreManager;
 import org.wso2.carbon.user.core.UserStoreException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-
 
 
 /**
@@ -55,9 +54,7 @@ public class RemoteUMClient {
     private AuthenticationAdminStub authstub = null;
     private ConfigurationContext ctx;
     private String authCookie = null;
-    private WSUserStoreManager remoteUserStoreManager = null;
     private ClaimManager claimManager = null;
-    private WSAuthorizationManager remoteAuthorizationManager = null;
 
     /**
      * Initialization of environment
@@ -119,14 +116,12 @@ public class RemoteUMClient {
         //create web service client
         remoteUMClient.createClaimManager();
 
-        /*============================================================================================================*/
 
         if (operation.equals("addClaimDialect")) {
 
-            //remoteUMClient.addClaimDialect("http://mydialectnew123.com");
             remoteUMClient.addClaimDialect(properties.getProperty(RemoteUMSampleConstants.CLAIM_DIALECT_URI));
 
-        } else if (operation.equals ("removeClaimDialect")) {
+        } else if (operation.equals("removeClaimDialect")) {
 
             remoteUMClient.removeClaimDialect(properties.getProperty(RemoteUMSampleConstants.CLAIM_DIALECT_URI));
 
@@ -135,39 +130,20 @@ public class RemoteUMClient {
             remoteUMClient.removeLocalClaim(properties.getProperty(RemoteUMSampleConstants.CLAIM_URI));
 
         } else if (operation.equals("addLocalClaim")) {
+
+            List <ClaimPropertyDTO>list = new ArrayList();
+
+            list.add(buildClaimPropertyDTO("DisplayName", RemoteUMSampleConstants.DISPLAY_NAME));
+            list.add(buildClaimPropertyDTO("Description", RemoteUMSampleConstants.CLAIM_DESCRIPTION));
+            //list.add(buildClaimPropertyDTO("RegEx", RemoteUMSampleConstants.REGULAR_EXPRESSION));
+            //list.add(buildClaimPropertyDTO("DisplayOrder", RemoteUMSampleConstants.DISPLAY_ORDER));
+            //list.add(buildClaimPropertyDTO("SupportedByDefault", RemoteUMSampleConstants.SUPPORTED_BY_DEFAULT));
+            //list.add(buildClaimPropertyDTO("Required", RemoteUMSampleConstants.REQUIRED_FOR_CLAIM));
+            //list.add(buildClaimPropertyDTO("ReadOnly", RemoteUMSampleConstants.READ_ONLY));
+
             LocalClaimDTO localClaimDTO = new LocalClaimDTO();
-
-            ClaimPropertyDTO claimPropertyDTO1 = new ClaimPropertyDTO();
-            claimPropertyDTO1.setPropertyName("DisplayName");
-            claimPropertyDTO1.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.DISPLAY_NAME));
-
-            ClaimPropertyDTO claimPropertyDTO2 = new ClaimPropertyDTO();
-            claimPropertyDTO2.setPropertyName("Description");
-            claimPropertyDTO2.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.CLAIM_DESCRIPTION));
-
-            ClaimPropertyDTO claimPropertyDTO3 = new ClaimPropertyDTO();
-            claimPropertyDTO3.setPropertyName("RegEx");
-            claimPropertyDTO3.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.REGULAR_EXPRESSION));
-
-            ClaimPropertyDTO claimPropertyDTO4 = new ClaimPropertyDTO();
-            claimPropertyDTO4.setPropertyName("DisplayOrder");
-            claimPropertyDTO4.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.DISPLAY_ORDER));
-
-            ClaimPropertyDTO claimPropertyDTO5 = new ClaimPropertyDTO();
-            claimPropertyDTO5.setPropertyName("SupportedByDefault");
-            claimPropertyDTO5.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.SUPPORTED_BY_DEFAULT));
-
-            ClaimPropertyDTO claimPropertyDTO6 = new ClaimPropertyDTO();
-            claimPropertyDTO6.setPropertyName("Required");
-            claimPropertyDTO6.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.REQUIRED_FOR_CLAIM));
-
-            ClaimPropertyDTO claimPropertyDTO7 = new ClaimPropertyDTO();
-            claimPropertyDTO7.setPropertyName("ReadOnly");
-            claimPropertyDTO7.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.READ_ONLY));
-
-            localClaimDTO.setClaimProperties(new ClaimPropertyDTO[]{claimPropertyDTO1, claimPropertyDTO2, claimPropertyDTO3, claimPropertyDTO4, claimPropertyDTO5, claimPropertyDTO6, claimPropertyDTO7});
+            localClaimDTO.setClaimProperties(list.toArray(new ClaimPropertyDTO[list.size()]));
             localClaimDTO.setLocalClaimURI(properties.getProperty(RemoteUMSampleConstants.CLAIM_URI));
-
 
             AttributeMappingDTO attributeMappingDTO = new AttributeMappingDTO();
             attributeMappingDTO.setAttributeName(properties.getProperty(RemoteUMSampleConstants.ATTRIBUTE_NAME_1));
@@ -178,37 +154,18 @@ public class RemoteUMClient {
 
         } else if (operation.equals("updateLocalClaim")) {
 
+            List <ClaimPropertyDTO>list = new ArrayList();
+
+            list.add(buildClaimPropertyDTO("DisplayName", RemoteUMSampleConstants.DISPLAY_NAME));
+            list.add(buildClaimPropertyDTO("Description", RemoteUMSampleConstants.CLAIM_DESCRIPTION));
+//            list.add(buildClaimPropertyDTO("RegEx", RemoteUMSampleConstants.REGULAR_EXPRESSION));
+//            list.add(buildClaimPropertyDTO("DisplayOrder", RemoteUMSampleConstants.DISPLAY_ORDER));
+//            list.add(buildClaimPropertyDTO("SupportedByDefault", RemoteUMSampleConstants.SUPPORTED_BY_DEFAULT));
+//            list.add(buildClaimPropertyDTO("Required", RemoteUMSampleConstants.REQUIRED_FOR_CLAIM));
+//            list.add(buildClaimPropertyDTO("ReadOnly", RemoteUMSampleConstants.READ_ONLY));
+
             LocalClaimDTO localClaimDTO = new LocalClaimDTO();
-
-            ClaimPropertyDTO claimPropertyDTO1 = new ClaimPropertyDTO();
-            claimPropertyDTO1.setPropertyName("DisplayName");
-            claimPropertyDTO1.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.DISPLAY_NAME));
-
-            ClaimPropertyDTO claimPropertyDTO2 = new ClaimPropertyDTO();
-            claimPropertyDTO2.setPropertyName("Description");
-            claimPropertyDTO2.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.CLAIM_DESCRIPTION));
-
-            ClaimPropertyDTO claimPropertyDTO3 = new ClaimPropertyDTO();
-            claimPropertyDTO3.setPropertyName("RegEx");
-            claimPropertyDTO3.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.REGULAR_EXPRESSION));
-
-            ClaimPropertyDTO claimPropertyDTO4 = new ClaimPropertyDTO();
-            claimPropertyDTO4.setPropertyName("DisplayOrder");
-            claimPropertyDTO4.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.DISPLAY_ORDER));
-
-            ClaimPropertyDTO claimPropertyDTO5 = new ClaimPropertyDTO();
-            claimPropertyDTO5.setPropertyName("SupportedByDefault");
-            claimPropertyDTO5.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.SUPPORTED_BY_DEFAULT));
-
-            ClaimPropertyDTO claimPropertyDTO6 = new ClaimPropertyDTO();
-            claimPropertyDTO6.setPropertyName("Required");
-            claimPropertyDTO6.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.REQUIRED_FOR_CLAIM));
-
-            ClaimPropertyDTO claimPropertyDTO7 = new ClaimPropertyDTO();
-            claimPropertyDTO7.setPropertyName("ReadOnly");
-            claimPropertyDTO7.setPropertyValue(properties.getProperty(RemoteUMSampleConstants.READ_ONLY));
-
-            localClaimDTO.setClaimProperties(new ClaimPropertyDTO[]{claimPropertyDTO1, claimPropertyDTO2, claimPropertyDTO3, claimPropertyDTO4, claimPropertyDTO5, claimPropertyDTO6, claimPropertyDTO7});
+            localClaimDTO.setClaimProperties(list.toArray(new ClaimPropertyDTO[list.size()]));
             localClaimDTO.setLocalClaimURI(properties.getProperty(RemoteUMSampleConstants.CLAIM_URI));
 
 
@@ -218,12 +175,10 @@ public class RemoteUMClient {
             localClaimDTO.setAttributeMappings(new AttributeMappingDTO[]{attributeMappingDTO});
 
             remoteUMClient.updateLocalClaim(localClaimDTO);
-
         } else {
             System.out.println("Please enter a valid operation");
         }
     }
-
 
     public void addClaimDialect(String externalClaimDialectURI) throws Exception {
 
@@ -239,30 +194,26 @@ public class RemoteUMClient {
         claimManager.removeClaimDialect(externalClaimDialect);
     }
 
-    public void removeLocalClaim(String localClaimURI) throws Exception{
+    public void removeLocalClaim(String localClaimURI) throws Exception {
 
         LocalClaimDTO localClaimDialect = new LocalClaimDTO();
         localClaimDialect.setLocalClaimURI(localClaimURI);
         claimManager.removeLocalClaim(localClaimURI);
     }
 
-    public void addLocalClaim(LocalClaimDTO localClaimDTO) throws Exception{
+    public void addLocalClaim(LocalClaimDTO localClaimDTO) throws Exception {
         claimManager.addLocalClaim(localClaimDTO);
     }
 
-    public void updateLocalClaim(LocalClaimDTO localClaimDTO) throws Exception{
+    public void updateLocalClaim(LocalClaimDTO localClaimDTO) throws Exception {
         claimManager.updateLocalClaim(localClaimDTO);
 
     }
 
 
-/*===================================================================================================*/
-
-
-
     private static void loadConfiguration() throws IOException {
         FileInputStream freader = new FileInputStream(RemoteUMSampleConstants.PROPERTIES_FILE_NAME);
-		properties.load(freader);
+        properties.load(freader);
 
         serverUrl = properties.getProperty(RemoteUMSampleConstants.REMOTE_SERVER_URL);
         username = properties.getProperty(RemoteUMSampleConstants.USER_NAME);
@@ -273,5 +224,14 @@ public class RemoteUMClient {
                 .TRUST_STORE_PATH);
         truststorePassword = properties.getProperty(RemoteUMSampleConstants.TRUST_STORE_PASSWORD);
     }
+
+    private static ClaimPropertyDTO buildClaimPropertyDTO(String propertyName, String propertyValue) {
+
+        ClaimPropertyDTO claimPropertyDTO = new ClaimPropertyDTO();
+        claimPropertyDTO.setPropertyName(propertyName);
+        claimPropertyDTO.setPropertyValue(properties.getProperty(propertyValue));
+        return claimPropertyDTO;
+    }
+
 
 }
